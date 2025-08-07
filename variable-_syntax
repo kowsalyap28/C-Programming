@@ -1,0 +1,17 @@
+/*
+            variable 
+
+       In c programming variable is named as storage 
+       location in the computer's memory     
+       variable stores data like (number,character etc.)
+
+
+*/
+
+# include <stdio.h>
+void main()
+{
+int a=1;        // int (data type)  a(variable) = 1(we assign the value a is 1 to the variable)
+printf("%d",a);
+
+}
