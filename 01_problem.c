@@ -2,6 +2,6 @@
 void main()
 {
 int a=3,b=6,c=a+b;
-printf("%d",&c);
+printf("%d",c);
 
 }
