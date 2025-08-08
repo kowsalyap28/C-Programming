@@ -1,0 +1,11 @@
+/*
+data types is show that how much the storage it can hold
+ 
+data types      |        format specifiers                  |           examples
+                |                                           |
+int             |          %d   (whole number)              |     int a=28
+float           |          %f   (less precision)            |     float=3.44
+double          |          %lf  (more precisiion)           |     double=3.33333
+char            |          %c   (single character)          |     char='A'
+
+*/
