@@ -1,0 +1,40 @@
+/* 
+
+Arithmetic operators are used to do the mathematic operations
+
+it is divided into two types based on there function
+
+they are * binary  and  * unary
+binary = (operand operator operand )  // example (a+b)
+unary =  (  operator operand ) // example (a++)
+
+
+
+binary operators
+
+types | meaning             | example
++     | add                 |  a+b
+-     | sub                 |  a-b
+*     | multiplication      |   a*b             
+/     | division            |   a/b
+%     | madulo              |   a%b
+ 
+
+
+unary operator
+
+types       meaning          example
+
+a++         post increment    a++
+a--         post decrement    a--  
+++a         pre increment     ++a  
+--a         pre  decrement    --a  
+
+
+difference between post and pre increment or decrement
+
+in post increment or decrement first it print the stored value than increse or decrese it
+in pre increment or decrement firsr increment and decrement operator works and then print the stored value
+
+*/
+
