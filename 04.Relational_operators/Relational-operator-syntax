@@ -1,0 +1,17 @@
+/*  Relational operators definition
+
+Relational  operators are used to compare two value and determines the relation between them
+
+If the statement was true it print (1) or else it print (0)
+ 
+
+types
+
+<  less than
+>  grater than
+<= less than or equal to 
+>= greater than equal to
+== is equal to
+!= not equal 
+
+*/
