@@ -1,0 +1,19 @@
+/*
+local operators are symbols used to compare or combine more condition
+ 
+types
+&&  logical (And)
+||  logical (or)
+!   logical (Not) 
+
+Explaination
+
+Logical (And)
+ it prints true (1) when both gates are true 
+Logical (Or) 
+ it prints true when any one gate is true
+Logical (Not)
+ it prints the opposite value
+
+
+*/
