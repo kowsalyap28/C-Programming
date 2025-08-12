@@ -1,0 +1,12 @@
+/*
+scanf definition 
+ scanf is used to get input from the useres
+example
+# include <stdio.h>
+{
+data types ;
+void main()
+printf("entre a number/variable")
+scanf("format specifiers ",& numbler/vaariable);
+printf("number/variable=format specifers",number/variable);
+*/
