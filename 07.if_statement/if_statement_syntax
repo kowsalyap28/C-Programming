@@ -1,0 +1,14 @@
+/* if_statement defintion
+if statement is a decision making program and it will excute the statement  only if the condition was true
+
+
+syntax
+
+if(condition)
+{
+statement
+}
+
+
+
+*/
