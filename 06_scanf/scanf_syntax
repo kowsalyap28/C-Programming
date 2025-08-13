@@ -9,4 +9,6 @@ void main()
 printf("entre a number/variable")
 scanf("format specifiers ",& numbler/vaariable);
 printf("number/variable=format specifers",number/variable);
+}
+
 */
