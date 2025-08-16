@@ -1,0 +1,20 @@
+/* syntax
+{
+
+if(condition)
+{
+if(condition)
+{
+statement;
+}
+else
+{
+statement;
+}
+}
+else(condition)
+{
+    statement;
+}
+}
+*/
