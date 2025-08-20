@@ -3,14 +3,14 @@
 
 if(condition)
 {
-if(condition)
-{
-statement;
-}
-else
-{
-statement;
-}
+   if(condition)
+    {
+     statement;
+    }
+   else
+    {
+     statement;
+    }
 }
 else(condition)
 {
