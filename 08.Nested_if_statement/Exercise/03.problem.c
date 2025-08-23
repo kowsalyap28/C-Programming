@@ -1,6 +1,6 @@
 // checkinf a number is positive or negitive if positive check even or odd
 # include <stdio.h>
-int mian()
+void main()
 {
 int a;
 printf("entre the a :");
