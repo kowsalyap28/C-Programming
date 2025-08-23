@@ -1,0 +1,23 @@
+/* switch case syntax
+
+switch(operartion)
+{
+case 'char 2':
+printf("statement");
+break;
+
+case 'char 2':
+printf("statement");
+break;
+
+case 'char 3'
+printf("statement");
+break;
+
+defult:
+printf("invalid operator");
+break;
+
+}
+
+*/
