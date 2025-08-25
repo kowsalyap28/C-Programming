@@ -1,0 +1,1 @@
+//write a programm to check if a given number is divisible by 5?

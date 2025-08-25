@@ -1,0 +1,1 @@
+//write a programm to check a person's age is greater than 18(elgible for voting)

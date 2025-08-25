@@ -1,0 +1,1 @@
+// write a programm to check if the entered character is a vowel
