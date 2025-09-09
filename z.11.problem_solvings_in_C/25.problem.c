@@ -8,6 +8,8 @@ void main()
     switch(num)
 {
 case 1:
+
+
 printf("january");
 break;
 case 2:
