@@ -10,7 +10,7 @@ copy=n;
 copy=copy%10;
 digit++;
 }
-while(i>0)
+while(i>copy)
 {
  sum=sum+pow((copy%10),digit);
 copy=copy/10;
