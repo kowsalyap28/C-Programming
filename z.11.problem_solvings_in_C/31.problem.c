@@ -13,4 +13,6 @@ void main()
     double lf=f;
     printf("lf=%lf",f);
 
+    // char-->int-->float-->double-->(implict")
+
 }
