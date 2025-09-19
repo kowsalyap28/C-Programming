@@ -9,13 +9,13 @@ void main()
  printf("double=%lf\n",d);
 
  float f=(double)d;
- printf("float=%f\n",f);
+ printf("float=%f\n",f);  // double to float 
   
  int a=(float)f;
- printf("integer=%d\n",a);
+ printf("integer=%d\n",a); // float to integer
 
  char ch=(int)a;
- printf("character=%c\n",ch);
+ printf("character=%c\n",ch);  // interger to character
 
 }
 
