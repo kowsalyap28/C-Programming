@@ -1,23 +1,26 @@
-#include <stdio.h>
-#define  p printf
-#define s scanf
+# include <stdio.h>
 int main()
 {
-int n,sum=0;
-p("enter the number n:");
-s("%d",&n);
-for(int i=1;i<=n;i++)
-{
-if(n%i==0)
-{
-p("divisor =%d\n",i);
-sum+=i;
-}
-}
-p("sum=%d\n",sum);
-if(n==sum)
-p("equal number");
-else
-p("not equal no");
-return 0;
+    int n,sum=0;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        if(n%i==0)
+        {
+            printf("%d ",i);
+            sum=sum+i;
+        }
+    }
+    printf("\n");
+    printf("%d\n",sum);
+    if(sum==n)
+    {
+        printf("%d=%d is an equal number",sum,n);
+    }
+    else 
+    {
+        printf("%d!=%d not an equal number",sum,n);
+    }
+
+
 }
