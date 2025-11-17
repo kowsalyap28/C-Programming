@@ -1,13 +1,23 @@
-// write a programm to check if a a person eligible for driving (age>18),and inside check if tey also have lincence 
 # include <stdio.h>
-void main()
+int main()
 {
-    int age,liscense;
-    printf("entre your age");
-    scanf("%d",&age);
-    if("age>18")
+    int n,fact,b;
+    int  result=0;
+    scanf("%d",&n);
+    int a=n;
+    while(a>0)
     {
-     if("liscence")
-
+        fact=1;
+        b=a%10;
+    
+        for(int i=1;i<=b;i++)
+        {
+           fact=fact*i;
+        }
+        
+        
+        result+=fact;
+        a/=10;
     }
+    printf("%d",result);
 }
