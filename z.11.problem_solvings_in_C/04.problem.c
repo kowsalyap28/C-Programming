@@ -10,6 +10,6 @@ printf("entre the rate:\n");
 scanf("%f",&rate);
 printf("enter the time in year:\n");
 scanf("%d",&time);
-SI = (principal * rate * time) /100;
+SI = (float)(principal * rate * time) /100;
 printf("SI=%f",SI);
 }
