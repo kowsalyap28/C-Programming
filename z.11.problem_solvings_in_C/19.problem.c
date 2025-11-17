@@ -19,5 +19,12 @@ int main()
         result+=fact;
         a/=10;
     }
-    printf("%d",result);
+    printf("%d\n",result);
+    if(result==n)
+    {
+        printf("%d is stronger number",n);
+    }
+    else{
+        printf("%d is not a stronger number",n);   
+    }
 }
