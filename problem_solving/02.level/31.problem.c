@@ -1,41 +1,45 @@
 # include <stdio.h>
-
 int main()
 {
-   int a,digit;
-   scanf("%d",&a);
-   printf("enter a either 0 or 1 replace the value:"),
-   scanf("%d",&digit);
-   if(digit==0)
-   {
-       int n=a;
-       while(n>0)
-       {
-       b=n%10;
-       if(b==0)
-       {
-           b=1;
-       }
-       b/=10;
-       }
-   }
-   else if(digit==1)
-   {
-       int n=a;
-      while(n>0)
-      {
-       n=a%10;
-       if(n==1)
-       {
-           n=0;
-       }
-       a/=10;
-      }
-   }
-   else
-   {
-      printf("invalid input");
-   }
+    int n;
+    scanf("%d",&n);
+    int value;
+    scanf("%d",&value);
+    int rev=0,tn=n;
+    while(tn>0)
+    {
+        int digit=tn%10;
+        if(value==1)
+        {
+        if(digit==1)
+        {
+            digit=0;
+    
+        }
+       
+        }
+        else if(value==0)
+        {
+        if(digit==0)
+        {
+            digit=1;
+    
+        }
+       
+        }
 
-    return 0;
+            rev=rev*10+digit;
+        
+        tn=tn/10;
+    }
+
+     int result=0;
+     int temn=rev;
+     while(temn>0)
+     {
+        result=result*10+temn%10;
+        temn/=10;
+     }
+     printf("%d",result);
+
 }
