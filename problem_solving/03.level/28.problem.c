@@ -10,14 +10,14 @@ int main()
         scanf("%d",&a[i]);
     }
     int value,tem,j;
-    scanf("%d",&value);
-    a[n]=value;
+    scanf("%d",&value);       //get value to insert
+    a[n]=value;               //insert value at the end      
     n++;
  for(i=0;i<n;i++)
    {
         for(j=i+1;j<n;j++)
    {
-    if(a[i]>a[j])
+    if(a[i]>a[j])             //sort in ascending order
     {
       tem=a[i];
       a[i]=a[j];
