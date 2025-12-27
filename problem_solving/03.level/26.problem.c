@@ -1,4 +1,4 @@
-// Insert at the end
+// Insert at end
 # include <stdio.h>
 int main()
 {
