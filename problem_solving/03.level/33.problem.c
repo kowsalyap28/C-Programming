@@ -15,7 +15,7 @@ int main()
     n++;                         //increase array size
     for(int i=0;i<n;i++)
     {
-        for(int j=i+1;j<n;j++)         //sort in descending order
+        for(int j=i+1;j<n;j++)   //sort in descending order
         {
             if(a[i]<a[j])
             {
