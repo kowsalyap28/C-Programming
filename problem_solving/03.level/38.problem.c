@@ -1,4 +1,4 @@
-
+//count repeated valueco
 # include <stdio.h>
 int main()
 {
@@ -8,11 +8,11 @@ int main()
     for(int i=0;i<n1;i++)
     {
         scanf("%d",&a[i]);
-        visited[i]=0;
+        visited[i]=0;                 //ini visti 0
     }
     for(int i=0;i<n1;i++)
     {
-        if(visited[i]==1)
+        if(visited[i]==1)            //if visit is 1 skip
         continue;
         int count=1;
         for(int j=i+1;j<n1;j++)
