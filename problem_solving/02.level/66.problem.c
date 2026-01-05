@@ -19,11 +19,13 @@ int main()
       }
       if(prime==1)
       {
+        
         for(int k=1;k<=i;k++)
         {
-            printf("* ");
+            printf("%d ",i);
         }
        printf("\n");
+        
       }
     }
 }
