@@ -18,7 +18,7 @@ int main()
         index++;
       }
     }
-    for(int i=position;i<n;i++)
+    for(int i=index;i<n;i++)
       {
         a[i]=0;
       }
