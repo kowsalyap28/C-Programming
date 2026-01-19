@@ -21,7 +21,7 @@ int main()
     }
     int sum1=0;
     for(int i=1;i<=arr[0];i++)
-    {
+    {   
          sum1+=i;                     
     }
     int sum2=0;
