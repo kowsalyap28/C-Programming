@@ -21,5 +21,9 @@ int main()
         sum2+=arr[i];
     }
     printf("%d %d",sum1,sum2);
+    if(sum1==sum2)
+    printf("pivot integer");
+    else
+    printf("not a pivot integer");
     return 0;
 }
