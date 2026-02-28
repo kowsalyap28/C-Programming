@@ -1,0 +1,23 @@
+//contiguous array 1
+# include <stdio.h>
+int main()
+{
+    int n;
+    scanf("%d",&n);
+    int arr[n];
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+    for(int i=0;i<n;i++)     //starting loop
+    {
+        for(int j=i;j<n;j++)     //ending loop
+        {
+            for(int k=i;k<=j;k++){
+                printf("%d ",arr[k]);     //printing elements between starting and ending loop
+            }
+            printf("\n");
+        }
+    }
+    
+}
