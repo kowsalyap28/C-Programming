@@ -10,10 +10,9 @@ int main()
         scanf("%d",&arr[i]);
         visited[i]=0;
     }
-    int count=0;
+     int count=0;
    for(int i=0;i<n;i++)
    {
-
     if(visited[i]==1)
     continue;
     for(int j=i+1;j<n;j++)
