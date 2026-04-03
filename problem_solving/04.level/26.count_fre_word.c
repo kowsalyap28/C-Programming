@@ -1,0 +1,28 @@
+//count frequency of each word
+# include <stdio.h>
+# include <string.h>
+int main()
+{
+    char str[100];
+    int vis[100]={0};
+    fgets(str,100,stdin);
+    str[strcspn(str,"\n")]='\0';
+    for(int i=0;str[i]!='\0';i++)
+    {
+        int count=1;                                //start as 1
+        if(vis[i]==1)
+        {
+            continue;                              //if the char is frequency is already counted,just skip it
+        }
+        for(int j=i+1;str[j]!='\0';j++)
+        {
+            if(str[i]==str[j])
+            {
+               vis[j]=1;                           //mark as repeated ,(so does not need to count again and again)
+               count++;                            //count frequency of non repeatind char
+               
+            }
+        }
+        printf("%c-%d times, ",str[i],count);
+    }
+}
