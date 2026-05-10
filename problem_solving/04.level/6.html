@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MilkCare Dashboard</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    background: #f4f6f8;
+}
+.sidebar {
+    width: 220px;
+    background: #0b3d2e;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+}
+.sidebar h2 {
+    font-size: 20px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar ul li {
+    padding: 10px;
+    margin: 8px 0;
+    background: #145c44;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.main {
+    flex: 1;
+    padding: 20px;
+}
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.chart {
+    height: 150px;
+    background: linear-gradient(to top, #2ecc71, #a9dfbf);
+    border-radius: 8px;
+}
+.section {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+}
+.table {
+    margin-top: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+.status {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+.green { background: #d4edda; }
+.orange { background: #fff3cd; }
+.red { background: #f8d7da; }
+</style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>MilkCare</h2>
+    <ul>
+        <li>Overview</li>
+        <li>Analytics</li>
+        <li>Collections</li>
+        <li>Farmers</li>
+        <li>Payments</li>
+        <li>Reports</li>
+    </ul>
+</div>
+<div class="main">
+    <div class="topbar">
+        <h2>Dashboard</h2>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="cards">
+        <div class="card">Total Collected<br><b>12,500 L</b></div>
+        <div class="card">Active Farmers<br><b>320</b></div>
+        <div class="card">Revenue<br><b>₹2.5L</b></div>
+        <div class="card">Quality Grade<br><b>95%</b></div>
+        <div class="card">Daily Collections<br><b>45</b></div>
+        <div class="card">Milk Price<br><b>₹80/L</b></div>
+    </div>
+
+    <div class="section">
+        <div class="card">
+            <h3>Monthly Collection</h3>
+            <div class="chart"></div>
+        </div>
+        <div class="card">
+            <h3>Expenses</h3>
+            <p>Feed: 40%</p>
+            <p>Transport: 25%</p>
+            <p>Maintenance: 35%</p>
+        </div>
+        <div class="card">
+            <h3>Quality Score</h3>
+            <h1>95%</h1>
+        </div>
+    </div>
+
+    <div class="table">
+        <h3>Zone Collection Summary</h3>
+        <table>
+            <tr>
+                <th>Zone</th>
+                <th>Farmers</th>
+                <th>Collection</th>
+                <th>Revenue</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Zone A</td>
+                <td>50</td>
+                <td>1200L</td>
+                <td>₹96,000</td>
+                <td><span class="status green">On Track</span></td>
+            </tr>
+            <tr>
+                <td>Zone B</td>
+                <td>40</td>
+                <td>900L</td>
+                <td>₹72,000</td>
+                <td><span class="status orange">Low Supply</span></td>
+            </tr>
+            <tr>
+                <td>Zone C</td>
+                <td>30</td>
+                <td>800L</td>
+                <td>₹64,000</td>
+                <td><span class="status green">On Track</span></td>
+            </tr>
+            <tr>
+                <td>Zone D</td>
+                <td>25</td>
+                <td>600L</td>
+                <td>₹48,000</td>
+                <td><span class="status red">Needs Review</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

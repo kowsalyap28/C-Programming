@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MilkCare — Milk Collection Center Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0f4f1;
+  --surface:#ffffff;
+  --surface2:#f7f9f7;
+  --sidebar-bg:#1a2e1c;
+  --sidebar-hover:#253d28;
+  --sidebar-active:#2e7d32;
+  --sidebar-text:rgba(255,255,255,0.65);
+  --sidebar-text-active:#ffffff;
+  --header-bg:#ffffff;
+  --green:#2e7d32;
+  --green-light:#4caf50;
+  --green-pale:#e8f5e9;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --blue:#2563eb;
+  --text-1:#111827;
+  --text-2:#4b5563;
+  --text-3:#9ca3af;
+  --border:#e5e7eb;
+  --radius:10px;
+  --radius-lg:14px;
+  --font:'Sora',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --sidebar-w:240px;
+  --sidebar-collapsed:64px;
+  --header-h:60px;
+  --right-panel-w:300px;
+  --transition:.25s cubic-bezier(.4,0,.2,1);
+}
+
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);display:flex;height:100vh;overflow:hidden}
+
+/* ═══ LEFT SIDEBAR ═══ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--sidebar-bg);
+  display:flex;flex-direction:column;
+  transition:width var(--transition);
+  position:relative;z-index:50;overflow:hidden;
+}
+.sidebar.collapsed{width:var(--sidebar-collapsed)}
+
+.sidebar-logo{
+  height:var(--header-h);
+  display:flex;align-items:center;gap:12px;
+  padding:0 18px;border-bottom:1px solid rgba(255,255,255,0.06);
+  flex-shrink:0;overflow:hidden;
+}
+.logo-icon-box{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--green-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+}
+.logo-texts{overflow:hidden;white-space:nowrap}
+.logo-name{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.3px}
+.logo-sub{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.4px;text-transform:uppercase}
+
+.sidebar-toggle{
+  position:absolute;right:-12px;top:calc(var(--header-h)/2 - 12px);
+  width:24px;height:24px;border-radius:50%;
+  background:var(--green-light);border:2px solid var(--sidebar-bg);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:100;transition:transform var(--transition);
+  font-size:11px;color:#fff;font-weight:700;
+}
+.sidebar.collapsed .sidebar-toggle{transform:rotate(180deg)}
+
+.sidebar-section{
+  padding:12px 10px 4px;
+  font-size:10px;font-weight:500;color:rgba(255,255,255,.3);
+  letter-spacing:.6px;text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;
+  transition:opacity var(--transition);
+}
+.sidebar.collapsed .sidebar-section{opacity:0}
+
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 18px;margin:1px 8px;
+  border-radius:8px;cursor:pointer;
+  transition:all .2s;color:var(--sidebar-text);
+  white-space:nowrap;overflow:hidden;
+  position:relative;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff}
+.nav-item.active{background:var(--sidebar-active);color:var(--sidebar-text-active)}
+.nav-icon{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.nav-label{font-size:13px;font-weight:500;flex:1;overflow:hidden}
+.nav-badge{
+  background:var(--green-light);color:#fff;
+  font-size:10px;font-weight:600;font-family:var(--mono);
+  padding:2px 6px;border-radius:10px;flex-shrink:0;
+}
+.sidebar.collapsed .nav-label,.sidebar.collapsed .nav-badge{opacity:0;pointer-events:none}
+.sidebar.collapsed .nav-item{padding:9px 0;margin:1px 10px;justify-content:center}
+
+.sidebar-footer{
+  margin-top:auto;border-top:1px solid rgba(255,255,255,.06);
+  padding:12px 8px;
+}
+.user-card{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:8px;cursor:pointer;
+  transition:background .2s;overflow:hidden;
+}
+.user-card:hover{background:var(--sidebar-hover)}
+.user-avatar{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,#a7f3d0,#34d399);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:#064e3b;
+}
+.user-info{overflow:hidden;white-space:nowrap}
+.user-name{font-size:12px;font-weight:500;color:#fff}
+.user-role{font-size:10px;color:rgba(255,255,255,.4)}
+.sidebar.collapsed .user-info{opacity:0}
+.sidebar.collapsed .user-card{justify-content:center;padding:8px 0}
+
+/* ═══ MAIN BODY ═══ */
+.body-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;transition:all var(--transition)}
+
+/* ═══ TOP HEADER ═══ */
+.topbar{
+  height:var(--header-h);background:var(--header-bg);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;flex-shrink:0;gap:16px;
+  position:relative;z-index:40;
+}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.breadcrumb{font-size:13px;color:var(--text-3)}
+.breadcrumb span{color:var(--text-1);font-weight:500}
+.live-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--green-pale);border:1px solid #c8e6c9;
+  color:var(--green);border-radius:20px;padding:3px 10px;
+  font-size:11px;font-weight:500;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.tb-btn{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;color:var(--text-2);transition:all .2s;position:relative;
+}
+.tb-btn:hover{background:var(--surface2);border-color:#ccc}
+.tb-badge{
+  position:absolute;top:-4px;right:-4px;width:16px;height:16px;
+  background:var(--red);border:2px solid #fff;border-radius:50%;
+  font-size:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;width:220px;
+  font-size:12px;color:var(--text-3);cursor:text;
+  transition:border-color .2s;
+}
+.search-bar:hover{border-color:#aaa}
+.clock-display{font-family:var(--mono);font-size:12px;color:var(--text-3);background:var(--surface2);border:1px solid var(--border);padding:6px 12px;border-radius:8px}
+.right-panel-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--green);color:#fff;border:none;border-radius:8px;
+  padding:7px 14px;font-size:12px;font-weight:500;font-family:var(--font);
+  cursor:pointer;transition:all .2s;
+}
+.right-panel-btn:hover{background:#1b5e20}
+
+/* ═══ CONTENT ═══ */
+.content{flex:1;overflow-y:auto;padding:20px 24px;display:flex;gap:20px}
+.main-content{flex:1;display:grid;gap:16px;min-width:0;align-content:start}
+
+/* ═══ KPI CARDS ═══ */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  cursor:default;transition:all .2s;
+  animation:cardIn .5s both;
+}
+.kpi-card:nth-child(1){animation-delay:.04s}.kpi-card:nth-child(2){animation-delay:.08s}
+.kpi-card:nth-child(3){animation-delay:.12s}.kpi-card:nth-child(4){animation-delay:.16s}
+.kpi-card:nth-child(5){animation-delay:.2s}.kpi-card:nth-child(6){animation-delay:.24s}
+.kpi-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.08);transform:translateY(-2px);border-color:var(--green-light)}
+.kpi-lbl{font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.kpi-val{font-size:20px;font-weight:600;color:var(--text-1);letter-spacing:-.5px;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.kpi-trend{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px}
+.kpi-trend.up{background:#dcfce7;color:#166534}
+.kpi-trend.down{background:#fee2e2;color:#991b1b}
+.kpi-spark{margin-top:8px;height:24px}
+
+/* ═══ CHARTS ROW ═══ */
+.charts-row{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:12px}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  animation:cardIn .6s .2s both;
+}
+.ch-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.ch-title{font-size:13px;font-weight:600;color:var(--text-1)}
+.ch-sub{font-size:10px;color:var(--text-3);margin-top:2px}
+.ch-tabs{display:flex;gap:4px}
+.ch-tab{
+  padding:3px 9px;border-radius:5px;border:1px solid var(--border);
+  background:transparent;font-size:11px;color:var(--text-3);
+  cursor:pointer;font-family:var(--font);transition:all .15s;
+}
+.ch-tab:hover,.ch-tab.active{background:var(--green-pale);border-color:var(--green-light);color:var(--green)}
+
+/* Bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px;margin-top:6px}
+.b-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px;height:100%}
+.b-wrap{flex:1;display:flex;align-items:flex-end;width:100%}
+@keyframes barUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.b-bar{
+  width:100%;border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--green-light),var(--green));
+  transform-origin:bottom;animation:barUp .6s cubic-bezier(.34,1.56,.64,1) both;
+}
+.b-col:nth-child(1) .b-bar{animation-delay:.08s}
+.b-col:nth-child(2) .b-bar{animation-delay:.13s}
+.b-col:nth-child(3) .b-bar{animation-delay:.18s}
+.b-col:nth-child(4) .b-bar{animation-delay:.23s}
+.b-col:nth-child(5) .b-bar{animation-delay:.28s}
+.b-col:nth-child(6) .b-bar{animation-delay:.33s}
+.b-lbl{font-size:9px;color:var(--text-3);font-family:var(--mono)}
+
+/* Donut */
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.dleg{width:100%;display:grid;gap:6px}
+.dleg-row{display:flex;align-items:center;justify-content:space-between;font-size:11px}
+.dleg-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.dleg-lbl{display:flex;align-items:center;gap:6px;color:var(--text-2)}
+.dleg-val{font-weight:500;color:var(--text-1);font-family:var(--mono)}
+
+/* Progress bars */
+.prog-item{margin-bottom:10px}
+.prog-head{display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-bottom:3px}
+.prog-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+@keyframes slideRight{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.prog-fill{height:4px;border-radius:2px;transform-origin:left;animation:slideRight .8s .4s both}
+.gauge-center{text-align:center;margin:8px 0 4px}
+.gauge-val{font-size:24px;font-weight:600;font-family:var(--mono);color:var(--text-1)}
+.gauge-lbl{font-size:10px;color:var(--text-3)}
+
+/* ═══ TABLE ═══ */
+.tbl-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;
+  animation:cardIn .7s .3s both;
+}
+.tbl-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);gap:12px;
+}
+.tbl-title{font-size:13px;font-weight:600;color:var(--text-1)}
+.tbl-actions{display:flex;gap:8px;align-items:center}
+.tbl-search{
+  display:flex;align-items:center;gap:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:7px;padding:5px 10px;font-size:11px;color:var(--text-3);width:160px;
+}
+.tbl-export{
+  padding:5px 12px;border-radius:7px;border:1px solid var(--border);
+  background:transparent;font-size:11px;color:var(--text-2);cursor:pointer;
+  font-family:var(--font);transition:all .15s;
+}
+.tbl-export:hover{background:var(--green-pale);border-color:var(--green-light);color:var(--green)}
+table{width:100%;border-collapse:collapse}
+thead th{
+  padding:9px 18px;text-align:left;
+  font-size:10px;font-weight:500;color:var(--text-3);
+  letter-spacing:.5px;text-transform:uppercase;
+  background:var(--surface2);border-bottom:1px solid var(--border);
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;animation:cardIn .4s both}
+tbody tr:hover{background:var(--green-pale)}
+tbody tr:last-child{border-bottom:none}
+td{padding:11px 18px;font-size:12px;color:var(--text-2)}
+td.bold{font-weight:500;color:var(--text-1)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:500}
+.pill::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor}
+.pill.high{background:#dcfce7;color:#166534}
+.pill.med{background:#fef3c7;color:#92400e}
+.pill.low{background:#fee2e2;color:#991b1b}
+.pill.track{background:#dcfce7;color:#166534}
+.pill.warn{background:#fef3c7;color:#92400e}
+.pill.review{background:#fee2e2;color:#991b1b}
+.mini-bar-wrap{display:flex;align-items:center;gap:6px}
+.mini-track{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.mini-fill{height:3px;border-radius:2px;background:linear-gradient(90deg,var(--green-light),var(--green));animation:slideRight .8s .5s both;transform-origin:left}
+.mono{font-family:var(--mono);font-size:11px}
+
+/* ═══ RIGHT PANEL ═══ */
+.right-panel{
+  width:0;flex-shrink:0;overflow:hidden;
+  transition:width var(--transition);
+  display:flex;flex-direction:column;
+  background:var(--surface);border-left:1px solid var(--border);
+}
+.right-panel.open{width:var(--right-panel-w)}
+.rp-inner{width:var(--right-panel-w);padding:0;display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.rp-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.rp-title{font-size:13px;font-weight:600;color:var(--text-1)}
+.rp-close{
+  width:26px;height:26px;border-radius:6px;border:1px solid var(--border);
+  background:transparent;cursor:pointer;font-size:13px;color:var(--text-3);
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.rp-close:hover{background:var(--surface2)}
+.rp-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.rp-tab{
+  flex:1;padding:8px;font-size:11px;font-weight:500;color:var(--text-3);
+  background:transparent;border:none;cursor:pointer;font-family:var(--font);
+  border-bottom:2px solid transparent;transition:all .15s;
+}
+.rp-tab.active{color:var(--green);border-bottom-color:var(--green)}
+.rp-tab:hover:not(.active){color:var(--text-1)}
+.rp-section{padding:16px 18px;border-bottom:1px solid var(--border)}
+.rp-sec-title{font-size:10px;font-weight:500;color:var(--text-3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.alert-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;border-radius:8px;margin-bottom:7px;
+  border:1px solid transparent;cursor:pointer;transition:all .2s;
+  animation:cardIn .4s both;
+}
+.alert-item:hover{transform:translateX(2px)}
+.alert-item.red{background:#fff5f5;border-color:#fecaca}
+.alert-item.amber{background:#fffbeb;border-color:#fde68a}
+.alert-item.grn{background:#f0fdf4;border-color:#bbf7d0}
+.a-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.a-title{font-size:11px;font-weight:600;color:var(--text-1)}
+.a-desc{font-size:10px;color:var(--text-2);margin-top:1px;line-height:1.4}
+.a-time{font-size:9px;color:var(--text-3);font-family:var(--mono);margin-top:3px}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.act-dot{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px}
+.act-dot.col{background:#dcfce7}
+.act-dot.pay{background:#dbeafe}
+.act-dot.alt{background:#fee2e2}
+.act-dot.ql{background:#fef3c7}
+.act-info .act-title{font-size:11px;font-weight:500;color:var(--text-1)}
+.act-info .act-sub{font-size:10px;color:var(--text-3);margin-top:1px}
+.act-time{font-size:9px;color:var(--text-3);font-family:var(--mono);white-space:nowrap;margin-top:2px}
+
+/* ═══ FOOTER ═══ */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 24px;background:var(--surface);border-top:1px solid var(--border);
+  font-size:10px;color:var(--text-3);flex-shrink:0;
+}
+.f-status{display:flex;align-items:center;gap:6px}
+.f-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+.f-links{display:flex;gap:14px}
+.f-link{color:var(--text-3);text-decoration:none;cursor:pointer;transition:color .15s}
+.f-link:hover{color:var(--green)}
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+
+/* TOOLTIP */
+.tooltip{position:relative}
+.tooltip::after{
+  content:attr(data-tip);
+  position:absolute;left:110%;top:50%;transform:translateY(-50%);
+  background:#1f2937;color:#fff;font-size:10px;padding:4px 8px;border-radius:5px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:200;
+}
+.sidebar.collapsed .tooltip::after{opacity:0}
+.sidebar.collapsed .nav-item:hover.tooltip::after{opacity:1}
+
+@media(max-width:1100px){
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+  .charts-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .charts-row{grid-template-columns:1fr}
+  .right-panel.open{width:260px}
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon-box">🥛</div>
+    <div class="logo-texts">
+      <div class="logo-name">MilkCare</div>
+      <div class="logo-sub">Collection Center</div>
+    </div>
+  </div>
+  <div class="sidebar-toggle" id="sidebarToggle">‹</div>
+
+  <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0">
+    <div class="sidebar-section">Main</div>
+    <div class="nav-item active tooltip" data-tip="Overview">
+      <span class="nav-icon">◉</span>
+      <span class="nav-label">Overview</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Analytics">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Analytics</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Collections">
+      <span class="nav-icon">🚛</span>
+      <span class="nav-label">Collections</span>
+      <span class="nav-badge">45</span>
+    </div>
+
+    <div class="sidebar-section">Management</div>
+    <div class="nav-item tooltip" data-tip="Farmers">
+      <span class="nav-icon">👨‍🌾</span>
+      <span class="nav-label">Farmers</span>
+      <span class="nav-badge">320</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Zones">
+      <span class="nav-icon">📍</span>
+      <span class="nav-label">Zones</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Quality Tests">
+      <span class="nav-icon">🧪</span>
+      <span class="nav-label">Quality Tests</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Vehicles">
+      <span class="nav-icon">🚐</span>
+      <span class="nav-label">Vehicles</span>
+    </div>
+
+    <div class="sidebar-section">Finance</div>
+    <div class="nav-item tooltip" data-tip="Payments">
+      <span class="nav-icon">💳</span>
+      <span class="nav-label">Payments</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Invoices">
+      <span class="nav-icon">🧾</span>
+      <span class="nav-label">Invoices</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Reports">
+      <span class="nav-icon">📄</span>
+      <span class="nav-label">Reports</span>
+    </div>
+
+    <div class="sidebar-section">System</div>
+    <div class="nav-item tooltip" data-tip="Settings">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </div>
+    <div class="nav-item tooltip" data-tip="Help">
+      <span class="nav-icon">❓</span>
+      <span class="nav-label">Help &amp; Support</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar">RK</div>
+      <div class="user-info">
+        <div class="user-name">Rajan Kumar</div>
+        <div class="user-role">Center Manager</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN BODY -->
+<div class="body-wrap">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="breadcrumb">Dashboard / <span>Overview</span></div>
+      <div class="live-pill">
+        <div class="live-dot"></div>
+        Live Data
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">🔍 &nbsp;Search...</div>
+      <div class="clock-display" id="clock">--:--:--</div>
+      <button class="tb-btn">
+        🔔
+        <div class="tb-badge">3</div>
+      </button>
+      <button class="tb-btn">⚙️</button>
+      <button class="right-panel-btn" id="rpToggle">
+        📋 Activity
+      </button>
+    </div>
+  </header>
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="content">
+    <div class="main-content">
+
+      <!-- KPI CARDS -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-lbl">🪣 Total Collected</div>
+          <div class="kpi-val">12,500 L</div>
+          <div class="kpi-trend up">↑ 8% vs last month</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4caf50"/><stop offset="100%" stop-color="#4caf50" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,18 20,12 40,16 60,8 80,10 100,5 120,3" fill="none" stroke="#4caf50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,18 20,12 40,16 60,8 80,10 100,5 120,3 120,24 0,24" fill="url(#s1)" opacity=".25"/>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">👨‍🌾 Active Farmers</div>
+          <div class="kpi-val">320</div>
+          <div class="kpi-trend up">↑ 5% this week</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,20 20,16 40,18 60,12 80,14 100,8 120,6" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,20 20,16 40,18 60,12 80,14 100,8 120,6 120,24 0,24" fill="url(#s2)" opacity=".2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">💰 Monthly Revenue</div>
+          <div class="kpi-val">₹2.5 L</div>
+          <div class="kpi-trend up">↑ 10% vs target</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,22 20,18 40,20 60,12 80,14 100,7 120,4" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,22 20,18 40,20 60,12 80,14 100,7 120,4 120,24 0,24" fill="url(#s3)" opacity=".2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">⭐ Quality Grade A</div>
+          <div class="kpi-val">95%</div>
+          <div class="kpi-trend up">↑ 3% this month</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,18 20,14 40,16 60,10 80,8 100,6 120,3" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,18 20,14 40,16 60,10 80,8 100,6 120,3 120,24 0,24" fill="url(#s4)" opacity=".2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">🚛 Daily Collections</div>
+          <div class="kpi-val">45</div>
+          <div class="kpi-trend up">↑ 2 more than avg</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,20 20,18 40,14 60,16 80,10 100,8 120,5" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,20 20,18 40,14 60,16 80,10 100,8 120,5 120,24 0,24" fill="url(#s5)" opacity=".2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">💲 Avg Milk Price</div>
+          <div class="kpi-val">₹80/L</div>
+          <div class="kpi-trend up">↑ 1% this week</div>
+          <div class="kpi-spark">
+            <svg width="100%" height="24" viewBox="0 0 120 24" preserveAspectRatio="none">
+              <defs><linearGradient id="s6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient></defs>
+              <polyline points="0,18 20,16 40,14 60,16 80,12 100,10 120,8" fill="none" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,18 20,16 40,14 60,16 80,12 100,10 120,8 120,24 0,24" fill="url(#s6)" opacity=".2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="charts-row">
+        <!-- Bar Chart -->
+        <div class="chart-card">
+          <div class="ch-head">
+            <div><div class="ch-title">Monthly Collection Volume</div><div class="ch-sub">Litres collected · 2025</div></div>
+            <div class="ch-tabs">
+              <button class="ch-tab active">6M</button>
+              <button class="ch-tab">12M</button>
+              <button class="ch-tab">YTD</button>
+            </div>
+          </div>
+          <div class="bar-chart">
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:55%" title="10,800 L"></div></div><div class="b-lbl">Dec</div></div>
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:68%" title="11,200 L"></div></div><div class="b-lbl">Jan</div></div>
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:52%" title="10,400 L"></div></div><div class="b-lbl">Feb</div></div>
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:82%" title="12,100 L"></div></div><div class="b-lbl">Mar</div></div>
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:74%" title="11,600 L"></div></div><div class="b-lbl">Apr</div></div>
+            <div class="b-col"><div class="b-wrap"><div class="b-bar" style="height:95%;background:linear-gradient(180deg,#22c55e,#16a34a);box-shadow:0 0 10px rgba(76,175,80,.3)" title="12,500 L"></div></div><div class="b-lbl" style="color:var(--green);font-weight:500">May</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--text-3);font-family:var(--mono)">
+            <span>Avg: 11,433 L</span><span>Peak: 12,500 L ↑</span><span>Target: 12,000 L</span>
+          </div>
+        </div>
+
+        <!-- Donut Chart -->
+        <div class="chart-card">
+          <div class="ch-head"><div><div class="ch-title">Expense Breakdown</div><div class="ch-sub">This month</div></div></div>
+          <div class="donut-wrap">
+            <svg width="110" height="110" viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#f3f4f6" stroke-width="14"/>
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#4caf50" stroke-width="14" stroke-dasharray="95.5 238.8" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#2563eb" stroke-width="14" stroke-dasharray="59.7 238.8" stroke-dashoffset="-95.5" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+              <circle cx="55" cy="55" r="38" fill="none" stroke="#f59e0b" stroke-width="14" stroke-dasharray="83.6 238.8" stroke-dashoffset="-155.2" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+              <text x="55" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#111827" font-family="Sora,sans-serif">₹2.5L</text>
+              <text x="55" y="63" text-anchor="middle" font-size="9" fill="#9ca3af" font-family="Sora,sans-serif">Total</text>
+            </svg>
+            <div class="dleg">
+              <div class="dleg-row"><div class="dleg-lbl"><div class="dleg-dot" style="background:#4caf50"></div>Feed cost</div><div class="dleg-val">40%</div></div>
+              <div class="dleg-row"><div class="dleg-lbl"><div class="dleg-dot" style="background:#2563eb"></div>Transport</div><div class="dleg-val">25%</div></div>
+              <div class="dleg-row"><div class="dleg-lbl"><div class="dleg-dot" style="background:#f59e0b"></div>Maintenance</div><div class="dleg-val">35%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Score -->
+        <div class="chart-card">
+          <div class="ch-head"><div><div class="ch-title">Quality Score</div><div class="ch-sub">Grade A benchmark</div></div></div>
+          <div class="gauge-center">
+            <div class="gauge-val">95%</div>
+            <div class="gauge-lbl">Grade A Quality</div>
+          </div>
+          <svg width="100%" height="60" viewBox="0 0 160 60">
+            <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ef4444"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#22c55e"/></linearGradient></defs>
+            <path d="M16 54 A62 62 0 0 1 144 54" fill="none" stroke="#f3f4f6" stroke-width="10" stroke-linecap="round"/>
+            <path d="M16 54 A62 62 0 0 1 144 54" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="185 195" stroke-dashoffset="0"/>
+            <line x1="80" y1="54" x2="132" y2="24" stroke="#1a2e1c" stroke-width="2" stroke-linecap="round" style="transform-origin:80px 54px;transform:rotate(-168deg)"/>
+            <circle cx="80" cy="54" r="4" fill="#1a2e1c"/>
+          </svg>
+          <div style="margin-top:6px">
+            <div class="prog-item">
+              <div class="prog-head"><span>Fat content</span><span class="mono">6.2%</span></div>
+              <div class="prog-track"><div class="prog-fill" style="width:82%;background:var(--green-light)"></div></div>
+            </div>
+            <div class="prog-item">
+              <div class="prog-head"><span>SNF level</span><span class="mono">8.9%</span></div>
+              <div class="prog-track"><div class="prog-fill" style="width:89%;background:#2563eb;animation-delay:.6s"></div></div>
+            </div>
+            <div class="prog-item" style="margin-bottom:0">
+              <div class="prog-head"><span>Bacteria count</span><span class="mono" style="color:#166534">Low ✓</span></div>
+              <div class="prog-track"><div class="prog-fill" style="width:95%;background:#a855f7;animation-delay:.8s"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="tbl-card">
+        <div class="tbl-head">
+          <div class="tbl-title">Zone Collection Summary</div>
+          <div class="tbl-actions">
+            <div class="tbl-search">🔍 &nbsp;Search zones...</div>
+            <button class="tbl-export">↓ Export CSV</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Zone</th><th>Zone Head</th><th>Farmers</th><th>Quality</th>
+              <th>Next Pickup</th><th>Collection (L)</th><th>Revenue</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">Zone A – North</td>
+              <td>Rajan Kumar</td>
+              <td class="mono">50</td>
+              <td><span class="pill high">High</span></td>
+              <td class="mono">02 May</td>
+              <td><div class="mini-bar-wrap"><div class="mini-track"><div class="mini-fill" style="width:80%"></div></div><span class="mono">1,200</span></div></td>
+              <td class="mono" style="color:#166534;font-weight:500">₹96,000</td>
+              <td><span class="pill track">On Track</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Zone B – South</td>
+              <td>Meena Devi</td>
+              <td class="mono">40</td>
+              <td><span class="pill med">Medium</span></td>
+              <td class="mono">03 May</td>
+              <td><div class="mini-bar-wrap"><div class="mini-track"><div class="mini-fill" style="width:60%;background:linear-gradient(90deg,#f59e0b,#d97706);animation-delay:.6s"></div></div><span class="mono">900</span></div></td>
+              <td class="mono" style="color:#166534;font-weight:500">₹72,000</td>
+              <td><span class="pill warn">Low Supply</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Zone C – East</td>
+              <td>Siva Prasad</td>
+              <td class="mono">30</td>
+              <td><span class="pill high">High</span></td>
+              <td class="mono">04 May</td>
+              <td><div class="mini-bar-wrap"><div class="mini-track"><div class="mini-fill" style="width:53%;animation-delay:.7s"></div></div><span class="mono">800</span></div></td>
+              <td class="mono" style="color:#166534;font-weight:500">₹64,000</td>
+              <td><span class="pill track">On Track</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Zone D – West</td>
+              <td>Lakshmi R.</td>
+              <td class="mono">25</td>
+              <td><span class="pill low">Low</span></td>
+              <td class="mono">05 May</td>
+              <td><div class="mini-bar-wrap"><div class="mini-track"><div class="mini-fill" style="width:40%;background:linear-gradient(90deg,#ef4444,#dc2626);animation-delay:.8s"></div></div><span class="mono">600</span></div></td>
+              <td class="mono" style="color:#991b1b;font-weight:500">₹48,000</td>
+              <td><span class="pill review">Needs Review</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- end main-content -->
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel" id="rightPanel">
+      <div class="rp-inner">
+        <div class="rp-header">
+          <div class="rp-title">Activity & Alerts</div>
+          <button class="rp-close" id="rpClose">✕</button>
+        </div>
+        <div class="rp-tabs">
+          <button class="rp-tab active" onclick="switchTab(this,'alerts')">Alerts</button>
+          <button class="rp-tab" onclick="switchTab(this,'activity')">Activity</button>
+          <button class="rp-tab" onclick="switchTab(this,'notes')">Notes</button>
+        </div>
+
+        <!-- ALERTS TAB -->
+        <div id="tab-alerts">
+          <div class="rp-section">
+            <div class="rp-sec-title">Active Alerts · 3 unread</div>
+            <div class="alert-item red">
+              <div class="a-icon">⚠️</div>
+              <div>
+                <div class="a-title">Low Supply — Zone B</div>
+                <div class="a-desc">30% below target. Follow-up required.</div>
+                <div class="a-time">Today, 09:15 AM</div>
+              </div>
+            </div>
+            <div class="alert-item amber">
+              <div class="a-icon">🔬</div>
+              <div>
+                <div class="a-title">Quality Drop — Zone D</div>
+                <div class="a-desc">Fat content below 5.5%. Lab retest scheduled.</div>
+                <div class="a-time">Today, 08:42 AM</div>
+              </div>
+            </div>
+            <div class="alert-item grn">
+              <div class="a-icon">✅</div>
+              <div>
+                <div class="a-title">Record Collection — Zone A</div>
+                <div class="a-desc">Surpassed monthly target by 12%.</div>
+                <div class="a-time">Yesterday, 05:30 PM</div>
+              </div>
+            </div>
+          </div>
+          <div class="rp-section">
+            <div class="rp-sec-title">Quick Stats</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:18px;font-weight:600;color:var(--green);font-family:var(--mono)">3</div>
+                <div style="font-size:10px;color:var(--text-3)">Open Alerts</div>
+              </div>
+              <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:18px;font-weight:600;color:var(--blue);font-family:var(--mono)">8</div>
+                <div style="font-size:10px;color:var(--text-3)">Pickups Today</div>
+              </div>
+              <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:18px;font-weight:600;color:var(--amber);font-family:var(--mono)">2</div>
+                <div style="font-size:10px;color:var(--text-3)">Pending Tests</div>
+              </div>
+              <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center">
+                <div style="font-size:18px;font-weight:600;color:#166534;font-family:var(--mono)">₹2.8L</div>
+                <div style="font-size:10px;color:var(--text-3)">Week Revenue</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY TAB -->
+        <div id="tab-activity" style="display:none">
+          <div class="rp-section">
+            <div class="rp-sec-title">Recent Activity</div>
+            <div class="activity-item">
+              <div class="act-dot col">🚛</div>
+              <div class="act-info" style="flex:1">
+                <div class="act-title">Collection — Zone A</div>
+                <div class="act-sub">1,200 L · Grade A confirmed</div>
+              </div>
+              <div class="act-time">09:48</div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot pay">💳</div>
+              <div class="act-info" style="flex:1">
+                <div class="act-title">Payment — 50 farmers</div>
+                <div class="act-sub">₹96,000 via NEFT</div>
+              </div>
+              <div class="act-time">09:20</div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot alt">🔔</div>
+              <div class="act-info" style="flex:1">
+                <div class="act-title">Alert raised — Zone B</div>
+                <div class="act-sub">Notification sent to manager</div>
+              </div>
+              <div class="act-time">09:15</div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot ql">🧪</div>
+              <div class="act-info" style="flex:1">
+                <div class="act-title">Quality test — Zone C</div>
+                <div class="act-sub">All 30 samples passed</div>
+              </div>
+              <div class="act-time">08:50</div>
+            </div>
+            <div class="activity-item">
+              <div class="act-dot col">🚛</div>
+              <div class="act-info" style="flex:1">
+                <div class="act-title">Route optimised — Zone D</div>
+                <div class="act-sub">Saved 18 km on next pickup</div>
+              </div>
+              <div class="act-time">08:10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTES TAB -->
+        <div id="tab-notes" style="display:none">
+          <div class="rp-section">
+            <div class="rp-sec-title">Manager Notes</div>
+            <textarea id="noteArea" style="width:100%;height:120px;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:12px;font-family:var(--font);color:var(--text-1);background:var(--surface2);resize:none;outline:none" placeholder="Add notes here..."></textarea>
+            <button onclick="saveNote()" style="margin-top:8px;width:100%;padding:8px;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:12px;font-weight:500;font-family:var(--font);cursor:pointer">Save Note</button>
+            <div id="savedNotes" style="margin-top:12px;display:grid;gap:6px"></div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+  </div><!-- end content -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="f-status">
+      <div class="f-dot"></div>
+      All systems operational
+      <span style="color:var(--border)">·</span>
+      <span id="lastUpdated">Last updated just now</span>
+    </div>
+    <div style="font-size:10px;color:var(--text-3)">MilkCare v2.0 · Prototype Data · © 2025</div>
+    <div class="f-links">
+      <span class="f-link">Help</span>
+      <span class="f-link">Privacy</span>
+      <span class="f-link">Export</span>
+    </div>
+  </footer>
+
+</div><!-- end body-wrap -->
+
+<script>
+// ── Clock ──
+function tick(){
+  const t=new Date();
+  document.getElementById('clock').textContent=t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+tick();setInterval(tick,1000);
+
+// ── Last updated counter ──
+let sec=0;
+const lu=document.getElementById('lastUpdated');
+setInterval(()=>{sec++;lu.textContent=sec<60?'Last updated '+sec+'s ago':'Last updated '+Math.floor(sec/60)+'m ago'},1000);
+
+// ── Sidebar collapse ──
+const sidebar=document.getElementById('sidebar');
+const toggle=document.getElementById('sidebarToggle');
+toggle.addEventListener('click',()=>sidebar.classList.toggle('collapsed'));
+
+// ── Nav items ──
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',function(){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ── Right panel ──
+const rightPanel=document.getElementById('rightPanel');
+document.getElementById('rpToggle').addEventListener('click',()=>rightPanel.classList.toggle('open'));
+document.getElementById('rpClose').addEventListener('click',()=>rightPanel.classList.remove('open'));
+
+// ── Tabs ──
+function switchTab(btn,name){
+  document.querySelectorAll('.rp-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['alerts','activity','notes'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===name?'block':'none';
+  });
+}
+
+// ── Chart action tabs ──
+document.querySelectorAll('.ch-tabs').forEach(group=>{
+  group.querySelectorAll('.ch-tab').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      group.querySelectorAll('.ch-tab').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+});
+
+// ── Notes ──
+const notes=[];
+function saveNote(){
+  const v=document.getElementById('noteArea').value.trim();
+  if(!v)return;
+  notes.unshift({text:v,time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});
+  document.getElementById('noteArea').value='';
+  renderNotes();
+}
+function renderNotes(){
+  const c=document.getElementById('savedNotes');
+  c.innerHTML=notes.slice(0,5).map(n=>`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:9px 11px"><div style="font-size:11px;color:var(--text-1)">${n.text}</div><div style="font-size:9px;color:var(--text-3);margin-top:4px;font-family:var(--mono)">${n.time}</div></div>`).join('');
+}
+
+// ── Open right panel by default ──
+setTimeout(()=>rightPanel.classList.add('open'),300);
+</script>
+</body>
+</html>
