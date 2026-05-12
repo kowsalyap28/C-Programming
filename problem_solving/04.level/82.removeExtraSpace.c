@@ -1,4 +1,4 @@
-//Remove extra spaces (ensure only one space between words)
+// Remove extra spaces (ensure only one space between words)
 # include <stdio.h>
 # include <string.h>
 int main()
