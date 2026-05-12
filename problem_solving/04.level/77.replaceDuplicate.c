@@ -1,4 +1,4 @@
-//Replace Repeated Characters with #
+//1.Replace Repeated Characters with #
 # include <stdio.h>
 # include <string.h>
 int main()
