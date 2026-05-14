@@ -12,6 +12,7 @@ int main()
         if(str[i]!=str[len])
         {
             found=0;
+            break;
         }
     }
    if(found==1)
