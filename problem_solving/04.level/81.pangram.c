@@ -1,4 +1,4 @@
-//pangram
+//pangram or not
 # include <stdio.h>
 # include <string.h>
 # include <ctype.h>
