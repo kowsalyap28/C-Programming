@@ -9,11 +9,19 @@
 // {
 // printf("%d",add());
 // }
-int sum(int k,int m)
+// int sum(int k,int m)
+// {
+//    int v=m-k;
+// }
+// int main()
+// {
+// printf("%d",sum(11,28));
+// }
+int square(int num1)
 {
-   int v=m-k;
+   int result=num1*num1;
 }
 int main()
 {
-printf("%d",sum(11,28));
+   printf("%d",square(5));
 }
