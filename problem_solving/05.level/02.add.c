@@ -17,11 +17,30 @@
 // {
 // printf("%d",sum(11,28));
 // }
-int square(int num1)
+// int square(int num1)
+// {
+//    int result=num1*num1;
+// }
+// int main()
+// {
+//    printf("%d",square(5));
+// }
+//to check even odd
+void check(int n)
 {
-   int result=num1*num1;
+   if(n%2==0)
+   {
+      printf("even\n");
+   }
+   else
+   printf("odd");
 }
 int main()
 {
-   printf("%d",square(5));
+   int n;
+   for(int i=0;i<=5;i++)
+   {
+      scanf("%d",&n);
+      check(n);
+   }
 }
