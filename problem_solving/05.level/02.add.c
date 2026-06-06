@@ -26,21 +26,38 @@
 //    printf("%d",square(5));
 // }
 //to check even odd
+// void check(int n)
+// {
+//    if(n%2==0)
+//    {
+//       printf("even\n");
+//    }
+//    else
+//    printf("odd");
+// }
+// int main()
+// {
+//    int n;
+//    for(int i=0;i<=5;i++)
+//    {
+//       scanf("%d",&n);
+//       check(n);
+//    }
+// }
+//Check positive negative
 void check(int n)
 {
-   if(n%2==0)
-   {
-      printf("even\n");
-   }
+   if(n>0)
+   printf("positive");
+   else if(n==0)
+   printf("netural");
    else
-   printf("odd");
+   printf("negative");
 }
 int main()
 {
    int n;
-   for(int i=0;i<=5;i++)
-   {
-      scanf("%d",&n);
-      check(n);
-   }
+   for(int i=0;i<=4;i++)
+   scanf("%d",&n);
+   check(n);
 }
