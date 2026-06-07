@@ -45,6 +45,8 @@
 //    }
 // }
 //Check positive negative
+
+
 void check(int n)
 {
    if(n>0)
