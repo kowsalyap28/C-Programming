@@ -44,22 +44,39 @@
 //       check(n);
 //    }
 // }
+
 //Check positive negative
+// void check(int n)
+// {
+//    if(n>0)
+//    printf("positive");
+//    else if(n==0)
+//    printf("netural");
+//    else
+//    printf("negative");
+// }
+// int main()
+// {
+//    int n;
+//    for(int i=0;i<=4;i++)
+//    scanf("%d",&n);
+//    check(n);
+// }
+//largest number
 
-
-void check(int n)
+void largest(int a,int b,int c)
 {
-   if(n>0)
-   printf("positive");
-   else if(n==0)
-   printf("netural");
-   else
-   printf("negative");
+   if(a>b&&a>c)
+   printf("l=%d",a);
+   else if(b>a&&b>c)
+   printf("l=%d",b);
+   else if(c>a&&c>b)
+   printf("l=%d",c);
 }
 int main()
 {
-   int n;
-   for(int i=0;i<=4;i++)
-   scanf("%d",&n);
-   check(n);
+   int a,b,c;
+   scanf("%d %d %d",&a,&b,&c);
+  largest(a,b,c);
 }
+
